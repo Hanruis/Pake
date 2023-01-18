@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [windows]
+        build: [windows,macos]
         include:
 #         - build: linux
 #           os: ubuntu-20.04
@@ -23,11 +23,11 @@ jobs:
           rust: stable-x86_64-msvc
           target: x86_64-pc-windows-msvc
           # archive-name: target-windows.tar.gz
-#         - build: macos
-#           os: macos-latest
-#           rust: stable
-#           target: x86_64-apple-darwin
-#           # archive-name: target-macos.tar.gz
+        - build: macos
+          os: macos-latest
+          rust: stable
+          target: x86_64-apple-darwin
+          # archive-name: target-macos.tar.gz
       fail-fast: false
 
     steps:
@@ -58,11 +58,11 @@ jobs:
 #       if: matrix.os == 'ubuntu-20.04'
 #       run: npm run build:all-unix
 
-#     - name: build for MacOS
-#       if: matrix.os == 'macos-latest'
-#       run: |
-#         rustup target add aarch64-apple-darwin
-#         npm run build:all-unix
+    - name: build for MacOS
+      if: matrix.os == 'macos-latest'
+      run: |
+        rustup target add aarch64-apple-darwin
+        npm run build:all-unix
 
     - name: build for windows
       if: matrix.os == 'windows-latest'
